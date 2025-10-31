@@ -1,0 +1,7 @@
+Mounia: Bonjour Fed !
+Fed: Salut Mounia, ça va ? Tu es fatiguée ?
+Mounia: Pff ... Oui, je suis fatiguée ! Et toi, ça va ?
+Fed: Bien merci, je suis content aujourd'hui.
+Sophie: Salut, je m'appelle Sophie. Enchantée !
+Mounia: Salut Sophie, je m'appelle Mounia.
+Fed: Bonjour Sophie, je m'appelle Fed. Enchanté !

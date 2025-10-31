@@ -1,0 +1,191 @@
+A1 : To study measures of central tendency for grouped and ungrouped data
+
+(A) Find averages for grouped and ungrouped types of data.
+For grouped data:
+> data = c(11, 16, 17, 20, 24, 30)
+> avg_ungrouped = mean(data)
+> print(avg_ungrouped)
+[1] 19.66667
+
+For ungrouped data:
+x = c(10, 20, 30, 40, 50)
+> f = c(4, 7, 10, 6, 5)
+> sum = sum(x * f)
+> sum_f <- sum(f)
+> avg_grouped <- sum / sum_f
+> print(avg_grouped)
+
+(B) Plot Histogram, Frequency distribution curve.
+data=read.csv(file.choose())
+> mid_values <- sapply(strsplit(data$X, "-"), function(x) mean(as.numeric(x)))
+> data$Mid_Value = mid_values
+> #Mean
+> mean <- sum(data$Mid_Value * data$f) / sum(data$f)
+> cat("Mean:", mean, "\n")
+Mean: 43.50746 
+> #Median
+> cumulative_freq <- cumsum(data$f)
+> n <- sum(data$f)
+> median_index <- min(which(cumulative_freq >= n / 2))
+> median_range <- data$X[median_index]
+> median_range_bounds <- as.numeric(strsplit(median_range, "-")[[1]])
+> class_width <- median_range_bounds[2] - median_range_bounds[1]
+> l <- median_range_bounds[1]
+> cf <- cumulative_freq[median_index - 1]
+> median_value <- l + (n / 2 - cf) * class_width / data$f[median_index]
+> cat("Median:", median_value, "\n")
+Median: 45.33333 
+> # Plot frequency distribution curve
+> plot(data$Mid_Value, data$f, type = "b", 
++     main = "Frequency Distribution Curve", 
++     xlab = "Wages", 
++     ylab = "Frequency")
+
+A2 : Describe the nature of a given curve using Moments, Skewness and Kurtosis.
+
+> mean = 5
+> ru1 = -4
+> ru2 = 22
+> ru3 = -117
+> ru4 = 560
+> 
+> moments = function(ru1, ru2, ru3, ru4){
++  u1 = 0
++  u2 = ru2 - (ru1*ru1)
++  u3 = ru3 - (3*ru2*ru1) + (2*ru1^3)
++  u4 = ru4 - (4*ru3*ru1) +(6*ru2*ru1*ru1) - (3*ru1^4)
++  b1 = (u4)/(u2*u2)
++  return(list(u1 = u1, u2 = u2, u3 = u3, u4 = u4, kurtosis = b1))
++ }
+> 
+> moments = moments(ru1,ru2,ru3,ru4)
+> print(moments)
+
+A3 : For given data points fit a linear, parabolic and exponential curve. Also find regression lines for the dataset.
+
+> x <- c(1, 3, 5, 8, 9, 10)
+> y <- c(12, 22, 32, 47, 52, 57)
+> # Calculate necessary sums and statistics
+> n <- length(x)
+> sum_x <- sum(x)
+> sum_y <- sum(y)
+> sum_x_squared <- sum(x^2)
+> sum_xy <- sum(x * y)
+> 
+> # Calculate the slope (m) and intercept (c) of the best-fit line
+> m <- (n * sum_xy - sum_x * sum_y) / (n * sum_x_squared - sum_x^2)
+> c <- (sum_y - m * sum_x) / n
+> 
+> # Print the equation of the best-fit line
+> cat("The equation of the best-fit line is: y =", m, "x +", c, "\n")
+The equation of the best-fit line is: y = 5 x + 7 
+> 
+> #Plot
+> plot(x, y, main = "Linear Curve Fit", xlab = "x", ylab = "y", pch = 19, col = "blue")
+> 
+> # Overlay the linear curve
+> abline(c, m, col = "red")
+
+
+A4 : To study partial , multiple linear correlation and fitting of multiple regression lines for the given data.
+
+library(stats)
+df <- data.frame(x1 = c(3, 5, 6, 8, 12, 14),
+                 x2 = c(16, 10, 7, 4, 3, 2),
+                 x3 = c(90, 72, 54, 42, 30, 12))
+
+model <- lm(x3 ~ x1 + x2, data = df)
+# Extract coefficients (multiple correlation coefficients)
+coefficients <- summary(model)$r.squared
+cat("The coefficient of multiple correlation between x3, x1, and x2 is:", coefficients, "\n")
+
+A5 : To fit Binomial distribution for the given data
+Overview: - This lab provides conceptual understanding of Binomial distribution using R
+Analyze data & fit linear model
+Find the table for BIN(n=10,P=1/6) and list the binomial distribution values as a table.
+For a Binomial(7,1/4) random variable named X,
+i. Compute the probability of two success
+ii. Compute the Probabilities for whole space
+iii. Display those probabilities in a table
+iv. Show the shape of this binomial Distribution
+
+price = c(4.5, 5.5, 4.5, 4.5, 4.0, 5.5, 5.5, 6.5, 5.0, 5.5, 6.0, 4.5)
+sold = c(125, 115, 140, 140, 150, 150, 130, 120, 130, 100, 105, 150)
+
+head(df)
+
+#Visualize data
+plot(x = df$price, y = df$sold, type = "p",
+     main = "Relationship between Price & Quantity Sold", 
+     xlab = "Price (in Rupees)", ylab = "Quantity Sold (in KG)")
+
+#Fitting a linear model
+model = lm(df$price~df$sold)
+summary.lm(model)
+
+A6 : Use Poisson’s distribution in problems with a small chance of success
+
+# Expected average rate of malfunctions (lambda)
+lambda <- 0.01 * 100  # 1% of 100 disk drives
+
+# Calculate the probability using the Poisson distribution
+prob_not_more_than_three <- ppois(3, lambda)
+print(prob_not_more_than_three)
+
+A7 : To test the goodness of fit using chi square distribution.
+
+> demand.parts <- data.frame(
++  demand = c('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'),
++  O = c(1124, 1125, 1110, 1120, 1126, 1115),
++  E = c(1120, 1120, 1120, 1120, 1120, 1120)
++ )
+> 
+> knitr::kable(demand.parts)
+
+|demand |    O|    E|
+|:------|----:|----:|
+|Mon    | 1124| 1120|
+|Tue    | 1125| 1120|
+|Wed    | 1110| 1120|
+|Thu    | 1120| 1120|
+|Fri    | 1126| 1120|
+|Sat    | 1115| 1120|
+> 
+> sum((demand.parts$O-demand.parts$E)^2/demand.parts$E)
+[1] 0.1803571
+> chisq.test(x=c(1124,1125,1110,1120,1126,1115))
+
+A8 : To generate normally distributed data of random variables
+
+1) dnorm()
+Code:
+# Create a sequence of numbers between -10 and 10 incrementing by 0.1. 
+x <- seq(-10, 10, by = .1)
+# Choose the mean as 2.5 and standard deviation as 0.5. 
+y <- dnorm(x, mean = 2.5, sd = 0.5)
+# Give the chart file a name. 
+plot(x,y)
+
+2) pnorm()
+Code:
+# Create a sequence of numbers between -10 and 10 incrementing by 0.1. 
+x <- seq(-10, 10, by = .2)
+# Choose the mean as 2.5 and standard deviation as 0.5. 
+y <- pnorm(x, mean = 2.5, sd = 2)
+# Give the chart file a name. 
+plot(x,y)
+
+3) qnorm()
+Code:
+# Create a sequence of numbers between -10 and 10 incrementing by 0.1. 
+x <- seq(0, 1, by = .02)
+# Choose the mean as 2.5 and standard deviation as 0.5. 
+y <- qnorm(x, mean = 2, sd = 1)
+# Give the chart file a name. 
+plot(x,y)
+
+4) rnorm()
+Code:
+y<-rnorm(50)
+hist(y, main='Normal Distribution')
+
